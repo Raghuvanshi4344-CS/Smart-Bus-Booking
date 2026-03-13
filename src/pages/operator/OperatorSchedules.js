@@ -86,8 +86,7 @@ export default function OperatorSchedules() {
 
   const getBusInfo = (busId) => {
     const bus = buses.find(b => b.busId === busId);
-    if (!bus) return { number: 'N/A', model: 'Unknown Bus' };
-    return { number: bus.busNumber, model: bus.busModel };
+    return { number: bus ? bus.busNumber : 'N/A' };
   };
 
   return (
@@ -125,7 +124,6 @@ export default function OperatorSchedules() {
                     <th>Departure</th>
                     <th>Arrival</th>
                     <th>Price</th>
-                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -135,16 +133,13 @@ export default function OperatorSchedules() {
                     <tr key={schedule.id}>
                       <td>{schedule.from} → {schedule.to}</td>
                       <td>
-                        <div style={{ fontSize: '14px', fontWeight: '600' }}>{busInfo.model}</div>
+                        <div style={{ fontSize: '12px', color: '#666' }}>{busInfo.number}</div>
                         <div style={{ fontSize: '12px', color: '#666' }}>{busInfo.number}</div>
                       </td>
                       <td>{new Date(schedule.departureTime).toLocaleString()}</td>
                       <td>{new Date(schedule.arrivalTime).toLocaleString()}</td>
                       <td>₹{schedule.basePrice}</td>
                       <td>
-                        <span className={`operator-status ${schedule.status?.toLowerCase()}`}>
-                          {schedule.status}
-                        </span>
                       </td>
                     </tr>
                   );
@@ -180,7 +175,6 @@ export default function OperatorSchedules() {
                       <option value="">Choose a bus...</option>
                       {buses.map((bus) => (
                         <option key={bus.busId} value={bus.busId}>
-                          {bus.busModel} - {bus.busNumber}
                         </option>
                       ))}
                     </select>

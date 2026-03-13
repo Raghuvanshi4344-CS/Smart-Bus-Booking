@@ -51,7 +51,6 @@ export default function OperatorBuses() {
       // Map form fields to backend API keys
       const busData = {
         busNumber: formData.registrationNumber,
-        busModel: formData.model,
         busType: formData.type,
         totalSeats: parseInt(formData.totalSeats),
         features: formData.features,
@@ -121,7 +120,6 @@ export default function OperatorBuses() {
                 <div key={bus.busId || bus.id} className="operator-bus-card">
                   <div className="operator-bus-header">
                     {/* Show bus model if not null/empty */}
-                    {bus.busModel && <h3>{bus.busModel}</h3>}
                     {bus.busType && (
                       <span
                         className={`operator-bus-type badge-bus-type`}

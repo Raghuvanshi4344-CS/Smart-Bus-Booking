@@ -1,10 +1,12 @@
 # 🚌 SmartBus - Online Bus Booking Platform
 
-A modern, responsive web application for booking bus tickets online. Built with React.js and designed to provide a seamless booking experience across all devices.
+A modern, full-stack responsive web application for booking bus tickets online. Built with React.js on the frontend and a Node.js/Express REST API on the backend, designed to provide a seamless booking experience across all devices.
+
+> 🔗 **Backend Repository:** [smart-bus-backend](https://github.com/KartikKumar-01/smart-bus-backend) — REST API powering all bookings, authentication, scheduling, and seat management.
 
 ## 🌟 Live Demo
 
-**[View Live Site](https://smartbusbypriyanshutanwar.netlify.app)**
+
 
 ## ✨ Features
 
@@ -39,13 +41,20 @@ A modern, responsive web application for booking bus tickets online. Built with 
 - **HTML2Canvas** - Screenshot functionality for tickets
 - **jsPDF** - PDF generation for tickets
 
+### Backend
+- **Node.js / Express.js** - REST API server → [smart-bus-backend](https://github.com/KartikKumar-01/smart-bus-backend)
+- **PostgreSQL + Prisma ORM** - Relational database and query management
+- **Redis** - Session caching and seat locking
+- **JWT** - Access and refresh token authentication
+- **Cloudinary** - Media storage and management
+
 ### APIs & Services
 - **Gemini AI API** - Chat support functionality
 - **OpenStreetMap API** - Real-time distance calculation
 - **OSRM Routing API** - Route optimization
 
 ### Deployment
-- **Netlify** - Hosting and continuous deployment
+- **Netlify** - Frontend hosting and continuous deployment
 - **GitHub** - Version control and CI/CD
 
 ## 📱 Mobile Responsiveness
@@ -65,23 +74,40 @@ The application is fully optimized for mobile devices with:
 
 ### Installation
 
-1. **Clone the repository**
+1. **Clone the frontend repository**
    ```bash
    git clone https://github.com/Priyanshutanwar19/SmartBus.git
    cd SmartBus/smartbus
    ```
 
-2. **Install dependencies**
+2. **Clone the backend repository**
+   ```bash
+   git clone https://github.com/KartikKumar-01/smart-bus-backend.git
+   cd smart-bus-backend
+   ```
+
+3. **Install frontend dependencies**
    ```bash
    npm install
    ```
 
-3. **Start the development server**
+4. **Install backend dependencies**
+   ```bash
+   cd smart-bus-backend
+   npm install
+   ```
+
+5. **Start the backend server** (runs on port 3001)
    ```bash
    npm start
    ```
 
-4. **Open your browser**
+6. **Start the frontend development server**
+   ```bash
+   npm start
+   ```
+
+7. **Open your browser**
    Navigate to `http://localhost:3000`
 
 ### Building for Production
@@ -163,15 +189,29 @@ smartbus/
 
 ## 🔧 Configuration
 
-### Environment Variables
+### Frontend Environment Variables
 Create a `.env` file in the root directory:
 ```env
 REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
+REACT_APP_API_BASE_URL=http://localhost:3001
+```
+
+### Backend Environment Variables
+See full setup in the [backend repository](https://github.com/KartikKumar-01/smart-bus-backend):
+```env
+PORT=3001
+DATABASE_URL=your_postgresql_connection_string
+ACCESS_TOKEN_SECRET=your_secret
+REFRESH_TOKEN_SECRET=your_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
 ```
 
 ### API Keys Required
 - **Gemini AI API**: For chat support functionality
 - **OpenStreetMap**: For distance calculations (free tier available)
+- **Cloudinary**: For media uploads (configured in backend)
 
 ## 📊 Performance
 
@@ -192,11 +232,19 @@ REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## � Related Repositories
+
+| Repository | Description | Link |
+|------------|-------------|------|
+| SmartBus Frontend | React.js UI (this repo) | [Priyanshutanwar19/SmartBus](https://github.com/Priyanshutanwar19/SmartBus) |
+| SmartBus Backend | Node.js REST API | [KartikKumar-01/smart-bus-backend](https://github.com/KartikKumar-01/smart-bus-backend) |
+
 ## 👨‍💻 Author
 
 **Priyanshu Tanwar**
 - GitHub: [@Priyanshutanwar19](https://github.com/Priyanshutanwar19)
 - LinkedIn: [Priyanshu Tanwar](https://www.linkedin.com/in/priyanshu-tanwar/)
+- Backend API: [smart-bus-backend](https://github.com/KartikKumar-01/smart-bus-backend)
 
 ## 🙏 Acknowledgments
 

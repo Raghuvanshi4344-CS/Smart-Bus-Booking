@@ -117,7 +117,6 @@ export default function OperatorCities() {
                   <div className="operator-city-info">
                     <h3>{city.name}</h3>
                     <p className="operator-city-state">{city.state || 'N/A'}</p>
-                    {city.caption && <p className="operator-city-caption">{city.caption}</p>}
                   </div>
                 </div>
               ))}
