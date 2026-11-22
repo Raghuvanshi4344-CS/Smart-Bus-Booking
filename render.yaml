@@ -1,9 +1,11 @@
 services:
   - type: web
-    name: smart-bus-booking
+    name: smart-bus-api
     runtime: node
-    buildCommand: npm install && npm run build && npm install --prefix backend
-    startCommand: node backend/server.js
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
         value: 20
@@ -24,4 +26,15 @@ services:
       - key: CLOUDINARY_API_KEY
         sync: false
       - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+  - type: web
+    name: smart-bus-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
         sync: false

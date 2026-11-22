@@ -46,6 +46,10 @@ app.use("/api/buses", busesRouter)
 app.use("/api/bus-schedules", busScheduleRouter)
 app.use("/api/bookings", bookingsRouter)
 
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok" })
+})
+
 app.use(express.static(frontendBuildDir));
 app.use((req, res, next) => {
     if (req.method === "GET" && !req.path.startsWith("/api/") && !req.path.startsWith("/admin")) {
