@@ -1,5 +1,29 @@
 # 🚌 SmartBus - Online Bus Booking Platform
 
+## Combined Repository
+
+This repository contains both applications:
+
+- `src/` and the root React application: passenger and admin frontend
+- `backend/`: Node.js, Express, Prisma, PostgreSQL, and Redis API
+- `render.yaml`: Render web-service deployment configuration
+
+### Local Development
+
+```bash
+# Frontend
+npm install
+npm start
+
+# Backend
+cd backend
+npm install
+npm start
+```
+
+Set `REACT_APP_API_URL` to the backend API URL (for example,
+`https://your-api.example.com/api`) before building the frontend.
+
 A modern, full-stack responsive web application for booking bus tickets online. Built with React.js on the frontend and a Node.js/Express REST API on the backend, designed to provide a seamless booking experience across all devices.
 
 > 🔗 **Backend Repository:** [smart-bus-backend](https://github.com/KartikKumar-01/smart-bus-backend) — REST API powering all bookings, authentication, scheduling, and seat management.

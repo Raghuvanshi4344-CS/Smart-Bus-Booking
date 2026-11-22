@@ -1,7 +1,9 @@
 import { io } from "socket.io-client";
 
-// Set your backend URL here (could also be from env like process.env.REACT_APP_API_URL)
-const SOCKET_URL = "http://localhost:3001";
+const SOCKET_URL =
+    process.env.REACT_APP_API_URL?.replace(/\/api\/?$/, "") ||
+    process.env.REACT_APP_SOCKET_URL ||
+    "http://localhost:3001";
 
 let socket = null;
 

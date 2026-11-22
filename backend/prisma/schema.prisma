@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  OPERATOR
+}
+
+enum BusType{
+  AC
+  NON_AC
+  SLEEPER
+}
+
+enum SeatType {
+  SEATER
+  SLEEPER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  INITIATED
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum ScheduleDirection {
+ FORWARD
+  REVERSE
+}
+
+enum ScheduleStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+model State {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  cities    City[]
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String
+  email         String    @unique
+  passwordHash  String
+  refreshToken  String?
+  role          UserRole  @default(USER)
+  imageUrl      String?
+  imagePublicId String?
+  createdAt     DateTime  @default(now())
+
+  operatorProfile Operator?
+  bookings      Booking[]
+
+  @@index([email])
+}
+
+model Operator {
+  id            Int      @id @default(autoincrement())
+  name          String
+  rating        Float?
+  contactInfo   String?
+  logoUrl       String?
+  imagePublicId String?
+  createdAt     DateTime @default(now())
+  userId  Int @unique
+
+  user      User @relation(fields: [userId], references: [id])
+  buses         Bus[]
+}
+
+model City {
+  id            Int      @id @default(autoincrement())
+  name          String
+  caption       String?
+  stateId       Int?
+  state         String?
+  latitude      Float?
+  longitude     Float?
+  popularity    Int      @default(0)
+  imageUrl      String?
+  imagePublicId String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+
+  stateRelation State?   @relation(fields: [stateId], references: [id])
+  routesAsCityA Route[]  @relation("RouteCityA")
+  routesAsCityB Route[]  @relation("RouteCityB")
+
+  @@unique([name, stateId])
+  @@index([popularity])
+}
+
+model Route {
+  id                Int  @id @default(autoincrement())
+  cityAId           Int
+  cityBId           Int
+  distanceKm        Int?
+  estimatedDuration Int?   // in minutes
+
+  cityA   City @relation("RouteCityA", fields: [cityAId], references: [id])
+  cityB   City @relation("RouteCityB", fields: [cityBId], references: [id])
+
+  schedules BusSchedule[]
+
+  @@unique([cityAId, cityBId])
+  @@index([cityAId])
+  @@index([cityBId])
+}
+
+model Bus {
+  id         Int      @id @default(autoincrement())
+  operatorId Int
+  busNumber  String   @unique
+  totalSeats Int
+  busType    BusType  @default(AC)
+  busModel   String?
+
+  operator   Operator @relation(fields: [operatorId], references: [id])
+  schedules  BusSchedule[]
+  seats      Seat[]
+
+  @@index([operatorId])
+}
+
+model BusSchedule {
+  id            Int              @id @default(autoincrement())
+  busId         Int
+  routeId       Int
+  direction     ScheduleDirection
+  departureTime DateTime
+  arrivalTime   DateTime
+  basePrice     Int
+  status      ScheduleStatus @default(ACTIVE)
+
+  bus      Bus   @relation(fields: [busId], references: [id])
+  route    Route @relation(fields: [routeId], references: [id])
+  bookings Booking[]
+  bookingSeats BookingSeat[]
+
+  @@index([routeId])
+  @@index([routeId, departureTime])
+  @@index([routeId, direction, departureTime])
+  @@index([busId])
+  @@index([status])
+}
+
+model Seat {
+  id         Int     @id @default(autoincrement())
+  busId      Int
+  seatNumber Int
+  seatType   SeatType @default(SEATER)
+
+  bus          Bus           @relation(fields: [busId], references: [id])
+  bookingSeats BookingSeat[]
+
+  @@unique([busId, seatNumber])
+}
+
+model Booking {
+  id         Int           @id @default(autoincrement())
+  userId     Int
+  scheduleId Int
+  totalPrice Int
+  status     BookingStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  expiresAt  DateTime?
+
+  user         User         @relation(fields: [userId], references: [id])
+  schedule     BusSchedule  @relation(fields: [scheduleId], references: [id])
+  bookingSeats BookingSeat[]
+  payment      Payment?
+
+  @@index([userId])
+  @@index([scheduleId])
+  @@index([userId, scheduleId])
+}
+
+model BookingSeat {
+  id         Int @id @default(autoincrement())
+  bookingId  Int
+  scheduleId Int
+  seatId     Int
+
+  booking  Booking     @relation(fields: [bookingId], references: [id])
+  schedule BusSchedule @relation(fields: [scheduleId], references: [id])
+  seat     Seat        @relation(fields: [seatId], references: [id])
+
+  @@unique([scheduleId, seatId]) 
+}
+
+model Payment {
+  id            Int           @id @default(autoincrement())
+  bookingId     Int           @unique
+  amount        Int
+  status        PaymentStatus @default(INITIATED)
+  transactionId String?
+  provider      String?
+  createdAt     DateTime      @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+}
