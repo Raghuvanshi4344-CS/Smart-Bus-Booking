@@ -6,15 +6,12 @@ import upload from "../../middleware/multer.js";
 
 const router = Router();
 
-router.use(authMiddleware);
-router.get("/", authorizeRoles("ADMIN", "OPERATOR", "USER"), getCitiesController);
-
+router.get("/", getCitiesController);
 router.get("/states", getAllStatesController);
-router.post("/states/add", authorizeRoles("ADMIN","OPERATOR"), addStateController);
 
-router.post("/add", authorizeRoles("ADMIN","OPERATOR"), upload.single("image"), addCityController);
-router.delete("/remove/:id", authorizeRoles("ADMIN","OPERATOR"), removeCityController);
-
-router.patch("/:id/image", authorizeRoles("ADMIN"), upload.single("image"), uploadCityImageController);
+router.post("/states/add", authMiddleware, authorizeRoles("ADMIN","OPERATOR"), addStateController);
+router.post("/add", authMiddleware, authorizeRoles("ADMIN","OPERATOR"), upload.single("image"), addCityController);
+router.delete("/remove/:id", authMiddleware, authorizeRoles("ADMIN","OPERATOR"), removeCityController);
+router.patch("/:id/image", authMiddleware, authorizeRoles("ADMIN"), upload.single("image"), uploadCityImageController);
 
 export default router;

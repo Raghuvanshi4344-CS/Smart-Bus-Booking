@@ -36,10 +36,18 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     // Handle 401 Unauthorized - token expired
-    if (error.response && error.response.status === 401) {
+    const requestUrl = error.config?.url || '';
+    const isProtectedRequest =
+      requestUrl.includes('/bookings') ||
+      requestUrl.includes('/profile') ||
+      requestUrl.includes('/auth/me');
+
+    if (error.response && error.response.status === 401 && isProtectedRequest) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
     }
     
     const errorMessage = error.response?.data?.message || error.message || 'API request failed';
