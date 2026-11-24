@@ -1,5 +1,9 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
-const ADMIN_AUTH_URL = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:3001';
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  'https://smart-bus-api-24jo.onrender.com/api';
+const ADMIN_AUTH_URL =
+  process.env.REACT_APP_API_URL?.replace('/api', '') ||
+  'https://smart-bus-api-24jo.onrender.com';
 
 // Helper function to make API calls
 const apiRequest = async (endpoint, options = {}) => {

@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 // API Configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  'https://smart-bus-api-24jo.onrender.com/api';
 
 // Create axios instance
 const axiosInstance = axios.create({
