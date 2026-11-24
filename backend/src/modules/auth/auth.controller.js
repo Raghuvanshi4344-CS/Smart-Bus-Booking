@@ -53,7 +53,9 @@ export const loginUserController = async (req, res) => {
   } catch (error) {
     return res.status(error.statusCode || 500).json({
       success: false,
-      message: error.statusCode === 500 ? "Server error" : error.message,
+      message: error.statusCode && error.statusCode !== 500
+        ? error.message
+        : "Server error",
     });
   }
 };
