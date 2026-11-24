@@ -1,9 +1,13 @@
 import { io } from "socket.io-client";
 
+const configuredApiUrl = process.env.REACT_APP_API_URL;
 const SOCKET_URL =
-    process.env.REACT_APP_API_URL?.replace(/\/api\/?$/, "") ||
-    process.env.REACT_APP_SOCKET_URL ||
-    "https://smart-bus-api-24jo.onrender.com";
+    configuredApiUrl && !configuredApiUrl.includes("localhost")
+        ? configuredApiUrl.replace(/\/api\/?$/, "")
+        : process.env.REACT_APP_SOCKET_URL &&
+          !process.env.REACT_APP_SOCKET_URL.includes("localhost")
+            ? process.env.REACT_APP_SOCKET_URL
+            : "https://smart-bus-api-24jo.onrender.com";
 
 let socket = null;
 
